@@ -1,0 +1,22 @@
+name: Build IPA
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build TrollRecorder
+        run: |
+          apt update
+          apt install -y make clang lld git
+          make package
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./packages/*.ipa
